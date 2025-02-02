@@ -1,19 +1,19 @@
-# import os
-# import shutil
-# from pathlib import Path
+import os
+import shutil
+from pathlib import Path
 #
 # from cloud_ops import download_file_from_s3, upload_file_to_s3, upload_directory_to_s3
 # from webscraper import WebScraper
 # from docling.document_converter import DocumentConverter
-# from markitdown import MarkItDown
-# import uuid
+from markitdown import MarkItDown
+import uuid
 # from python_pdf_extraction import extract_text_with_docling, extract_images_to_folder, extract_tables_with_docling
 #
-# base_dir = Path('./temp_processing')
-# output = base_dir / Path('output')
-# s3_bucket = 'neu-pdf-webpage-parser'
-# s3_pdf_input_prefix = 'pdfs/raw'
-# s3_html_input_prefix = 'html/raw'
+base_dir = Path('./temp_processing')
+output = base_dir / Path('output')
+s3_bucket = 'neu-pdf-webpage-parser'
+s3_pdf_input_prefix = 'pdfs/raw'
+s3_html_input_prefix = 'html/raw'
 #
 # def html_to_md_docling(url: str, job_name: uuid):
 #     s3_prefix_text = 'pdfs/html-parser/extracted-text'
@@ -91,19 +91,19 @@
 #     upload_file_to_s3(str(markdown_path), markdown_s3_key, bucket_name=s3_bucket)
 #     return markdown_path
 #
-# def standardize_markitdown(file: Path, job_name: uuid):
-#     s3_prefix_text = 'pdfs/markitdown/extracted-text'
-#     md = MarkItDown()
-#     conv_result = md.convert(str(file))
-#     markdown_dir = output / 'markdown'
-#     os.makedirs(markdown_dir, exist_ok=True)
-#     markdown_path = markdown_dir / f'{job_name}.md'
-#     with open(markdown_path, 'w') as f:
-#         f.write(conv_result.text_content)
-#     # Upload MD to S3
-#     markdown_s3_key = f'{s3_prefix_text}/{job_name}.md'
-#     upload_file_to_s3(str(markdown_path), markdown_s3_key, bucket_name=s3_bucket)
-#     return markdown_path
+def standardize_markitdown(file: Path, job_name: uuid):
+    s3_prefix_text = 'pdfs/markitdown/extracted-text'
+    md = MarkItDown()
+    conv_result = md.convert(str(file))
+    markdown_dir = output / 'markdown'
+    os.makedirs(markdown_dir, exist_ok=True)
+    markdown_path = markdown_dir / f'{job_name}.md'
+    with open(markdown_path, 'w') as f:
+        f.write(conv_result.text_content)
+    # Upload MD to S3
+    markdown_s3_key = f'{s3_prefix_text}/{job_name}.md'
+    # upload_file_to_s3(str(markdown_path), markdown_s3_key, bucket_name=s3_bucket)
+    return markdown_path
 #
 # def pdf_to_md_docling(file: Path, job_name: uuid):
 #     s3_prefix_text = 'pdfs/python-parser/extracted-text'
@@ -134,11 +134,11 @@
 #
 #     return markdown_local_path
 #
-# def get_job_name():
-#     return uuid.uuid4()
-#
-# def clean_temp_files():
-#     shutil.rmtree(base_dir, ignore_errors=True)
-#     os.makedirs(base_dir, exist_ok=True)
-#     os.makedirs(output, exist_ok=True)
+def get_job_name():
+    return uuid.uuid4()
+
+def clean_temp_files():
+    shutil.rmtree(base_dir, ignore_errors=True)
+    os.makedirs(base_dir, exist_ok=True)
+    os.makedirs(output, exist_ok=True)
 #
